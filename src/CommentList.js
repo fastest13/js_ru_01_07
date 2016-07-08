@@ -18,9 +18,9 @@ class CommentList extends Component {
 
   render() {
     const { isOpen } = this.state;
-    const comments = (typeof (this.props.comments) !== 'undefined') ? this.props.comments : [];
-    const commentsLength =  (comments.length) ? comments.length : 0;
-    const listItems = isOpen ? comments.map((comment) => <li key = {comment.id}><Comment comment = {comment}/></li>) : null;
+    const { comments } = this.props;
+    const commentsLength = comments.length;
+    const listItems = isOpen && comments && comments.map((comment) => <li key = {comment.id}><Comment comment = {comment}/></li>);
 
     return (
       <div>
