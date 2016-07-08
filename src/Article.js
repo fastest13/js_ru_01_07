@@ -4,6 +4,7 @@ import CommentList from './CommentList'
 class Article extends Component {
     state = {
         isOpen: false,
+        //У тебя CommentList на самом деле Comment, лучше было создать еще один компонент для списка комментов и вынести туда эту логику
         isCommentsOpen: false
     }
 
