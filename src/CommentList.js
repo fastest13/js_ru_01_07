@@ -1,44 +1,38 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import Comment from './Comment'
-
+import toggleOpen from './decorators/toggleOpen'
 
 class CommentList extends Component {
-  state = {
-    isOpen: false
-  }
 
-  /*
-   constructor(props) {
-   super(props)
-   this.state = {
-   isCommentsOpen: false
-   }
-   }
-   */
+    componentWillMount() {
+        console.log('---', this.props)
+    }
+    componentDidMount() {
+        console.log('---', 'mounted', this.refs.toggler)
+    }
 
-  render() {
-    const { isOpen } = this.state;
-    const { comments } = this.props;
-    const commentsLength = comments.length;
-    const listItems = isOpen && comments && comments.map((comment) => <li key = {comment.id}><Comment comment = {comment}/></li>);
+    componentWillReceiveProps(nextProps) {
+        console.log('---', this.props.isOpen, nextProps.isOpen)
+    }
 
-    return (
-      <div>
-        <a href="#" onClick = {this.toggleOpen}>Коментарии ({ commentsLength })</a>
-        <ul>
-          { listItems }
-        </ul>
-      </div>
-    )
-  }
+    componentWillUnmount() {
+        console.log('---', 'unmounting')
+    }
 
-  toggleOpen = (ev) => {
-    ev.preventDefault();
-    this.setState({
-      isOpen: !this.state.isOpen
-    })
-  }
+    render() {
+        const { comments, isOpen, toggleOpen } = this.props
+        if (!comments || !comments.length) return <h3>no comments yet</h3>
+
+        const commentItems = comments.map(comment => <li key = {comment.id}><Comment comment = {comment}/></li>)
+        const body = isOpen ? <ul>{commentItems}</ul> : null
+        const linkText = isOpen ? 'close comments' : 'show comments'
+        return (
+            <div>
+                <a href="#" onClick = {toggleOpen} ref="toggler">{linkText}</a>
+                {body}
+            </div>
+        )
+    }
 }
 
-
-export default CommentList
+export default toggleOpen(CommentList)
